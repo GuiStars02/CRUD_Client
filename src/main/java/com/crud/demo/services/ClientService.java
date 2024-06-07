@@ -1,6 +1,5 @@
 package com.crud.demo.services;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,6 +12,8 @@ import com.crud.demo.entities.Client;
 import com.crud.demo.entities.dtos.ClientDTO;
 import com.crud.demo.repositories.ClientRepository;
 import com.crud.demo.services.exceptions.NotFoundResourceException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 
 @Service
@@ -36,15 +37,32 @@ public class ClientService {
 
 	public ClientDTO insert(ClientDTO body) {
 		Client client = new Client();
-		
-		client.setName(body.getName());
-		client.setCpf(body.getCpf());
-		client.setIncome(body.getIncome());
-		client.setBirthDate(LocalDate.now());
-		client.setChildren(body.getChildren());
+		client = clientSets(client, body);
 		
 		repository.save(client);
 		return new ClientDTO(client);
+	}
+
+	public ClientDTO update(Long id, ClientDTO dto) {
+		try {
+			Client client = repository.getReferenceById(id);
+			Client clientUpdated = clientSets(client, dto);
+			
+			repository.save(clientUpdated);
+			return new ClientDTO(client);
+		}
+		catch(EntityNotFoundException e) {
+			throw new NotFoundResourceException("Resource not found");
+		}
+	}
+	
+	private Client clientSets(Client client, ClientDTO dto) {
+		client.setName(dto.getName());
+		client.setCpf(dto.getCpf());
+		client.setIncome(dto.getIncome());
+		client.setBirthDate(dto.getBirthDate());
+		client.setChildren(dto.getChildren());
+		return client;
 	}
 	
 }
