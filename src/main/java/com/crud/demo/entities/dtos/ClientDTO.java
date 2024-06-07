@@ -1,7 +1,7 @@
 package com.crud.demo.entities.dtos;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 
 import com.crud.demo.entities.Client;
 
@@ -12,7 +12,7 @@ public class ClientDTO implements Serializable {
 	private String name;
 	private String cpf;
 	private Double income;
-	private Instant birthDate;
+	private LocalDate birthDate;
 	private Integer children;
 	
 	public ClientDTO() {
@@ -59,11 +59,11 @@ public class ClientDTO implements Serializable {
 		this.income = income;
 	}
 
-	public Instant getBirthDate() {
+	public LocalDate getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Instant birthDate) {
+	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 
